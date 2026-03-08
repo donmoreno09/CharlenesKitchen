@@ -1,0 +1,16 @@
+# Laravel
+src/vendor/
+src/.env
+src/node_modules/
+src/storage/logs/*
+src/storage/framework/cache/*
+src/storage/framework/sessions/*
+src/storage/framework/views/*
+src/.phpunit.result.cache
+
+# Docker
+.env.docker
+
+# OS
+.DS_Store
+Thumbs.db
