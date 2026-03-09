@@ -2,33 +2,29 @@
 
 namespace App\Providers;
 
+use App\Contracts\Repositories\MenuItemRepositoryInterface;
+use App\Contracts\Repositories\OrderRepositoryInterface;
+use App\Repositories\MenuItemRepository;
+use App\Repositories\OrderRepository;
 use App\Services\CloudinaryService;
 use App\Services\EmailService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        // Binding tells the container: "when anything asks for CloudinaryService,
-        // create and return a singleton instance of it."
-        //
-        // A singleton means the same instance is reused for the entire request —
-        // we don't create a new CloudinaryService object for every controller.
-        $this->app->singleton(CloudinaryService::class, function () {
-            return new CloudinaryService();
-        });
-        $this->app->singleton(EmailService::class, function () {
-            return new EmailService();
-        });
+        // Bind interfaces to concrete implementations.
+        // When Laravel sees MenuItemRepositoryInterface as a type hint anywhere,
+        // it injects MenuItemRepository — the concrete class that does the work.
+        $this->app->bind(MenuItemRepositoryInterface::class, MenuItemRepository::class);
+        $this->app->bind(OrderRepositoryInterface::class, OrderRepository::class);
+
+        // Singleton services — one shared instance per request
+        $this->app->singleton(CloudinaryService::class, fn() => new CloudinaryService());
+        $this->app->singleton(EmailService::class, fn() => new EmailService());
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         //
