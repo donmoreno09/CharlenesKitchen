@@ -21,6 +21,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CloudinaryService::class, function () {
             return new CloudinaryService();
         });
+        $this->app->singleton(EmailService::class, function () {
+            return new EmailService();
+        });
     }
 
     /**
