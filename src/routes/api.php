@@ -27,15 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me',      [AuthController::class, 'me']);
 
-    // Admin-only menu management
-    Route::apiResource('menu-items', MenuItemController::class)
-        ->only(['store', 'update', 'destroy']);
-    Route::apiResource('categories', CategoryController::class)
-        ->only(['store', 'update', 'destroy']);
-
-    // Orders — covered in Step 4
-    Route::apiResource('orders', OrderController::class)
-        ->only(['index', 'show', 'store']);
+    // Orders 
+    Route::apiResource('orders', OrderController::class)->only(['index', 'show', 'store']);
     Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus']);
 
     // 'can:manage-menu' middleware checks the Gate before the controller runs.
