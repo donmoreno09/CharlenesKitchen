@@ -37,6 +37,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('orders', OrderController::class)
         ->only(['index', 'show', 'store']);
     Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus']);
+
+    // 'can:manage-menu' middleware checks the Gate before the controller runs.
+    // Non-admin users receive a 403 before the controller is even invoked.
+    Route::middleware('can:manage-menu')->group(function () {
+        Route::apiResource('menu-items', MenuItemController::class)
+            ->only(['store', 'update', 'destroy']);
+        Route::apiResource('categories', CategoryController::class)
+            ->only(['store', 'update', 'destroy']);
+    });
 });
 
 // Guest order lookup by token — public but token-gated

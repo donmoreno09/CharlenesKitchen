@@ -33,6 +33,10 @@ class OrderController extends Controller
     // Authorization is enforced by the Policy applied in Step 6.
     public function show(Order $order): OrderResource
     {
+        // authorize() calls OrderPolicy@view.
+        // If it returns false, a 403 Forbidden is returned automatically.
+        $this->authorize('view', $order);
+
         $order->load('orderItems');
         return new OrderResource($order);
     }
@@ -85,6 +89,9 @@ class OrderController extends Controller
     // In a production app, this would be restricted to admin/staff roles via Policy.
     public function updateStatus(UpdateOrderStatusRequest $request, Order $order): OrderResource
     {
+        // Only admins can update order status (OrderPolicy@before handles this).
+        $this->authorize('updateStatus', $order);
+
         $updated = $this->orderRepository->updateStatus($order, $request->validated('status'));
         return new OrderResource($updated->load('orderItems'));
     }
