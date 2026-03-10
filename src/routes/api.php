@@ -1,17 +1,43 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\MenuItemController;
+use App\Http\Controllers\Api\OrderController;
 use Illuminate\Support\Facades\Route;
 
-// ── Public Auth Routes ─────────────────────────────────────────────────────
-// No authentication required to register or log in
+// ── Public Routes ──────────────────────────────────────────────────────────────
+// No authentication needed — anyone can browse the menu
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login',    [AuthController::class, 'login']);
 
-// ── Protected Routes ───────────────────────────────────────────────────────
-// 'auth:sanctum' middleware validates the Bearer token on every request.
-// Requests without a valid token receive a 401 Unauthorized response.
+// apiResource() generates all 5 RESTful routes automatically:
+// GET    /categories         → index
+// GET    /categories/{id}    → show
+// POST   /categories         → store
+// PATCH  /categories/{id}    → update
+// DELETE /categories/{id}    → destroy
+Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
+Route::apiResource('menu-items', MenuItemController::class)->only(['index', 'show']);
+
+// ── Protected Routes ───────────────────────────────────────────────────────────
 Route::middleware('auth:sanctum')->group(function () {
+
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me',      [AuthController::class, 'me']);
+
+    // Admin-only menu management
+    Route::apiResource('menu-items', MenuItemController::class)
+        ->only(['store', 'update', 'destroy']);
+    Route::apiResource('categories', CategoryController::class)
+        ->only(['store', 'update', 'destroy']);
+
+    // Orders — covered in Step 4
+    Route::apiResource('orders', OrderController::class)
+        ->only(['index', 'show', 'store']);
+    Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus']);
 });
+
+// Guest order lookup by token — public but token-gated
+Route::get('orders/track/{token}', [OrderController::class, 'trackByToken']);
