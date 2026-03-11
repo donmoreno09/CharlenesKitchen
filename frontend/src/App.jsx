@@ -8,6 +8,8 @@ import CheckoutPage from './pages/CheckoutPage'
 import OrderTrackingPage from './pages/OrderTrackingPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import GuestRoute from './components/layout/GuestRoute'
+import ProtectedRoute from './components/layout/ProtectedRoute'
 
 export default function App() {
   return (
@@ -24,14 +26,24 @@ export default function App() {
         */}
         <CartProvider>
           <Routes>
-            <Route path="/" element={<RootLayout />}>
+              <Route path="login" element={
+                  <GuestRoute>
+                    <LoginPage />
+                  </GuestRoute>
+                }/>
+              <Route path="register" element={
+                  <GuestRoute>
+                    <RegisterPage />
+                  </GuestRoute>
+                }/>
+              <Route path="/" element={<RootLayout />}>
               <Route index element={<Navigate to="/menu" replace />} />
               <Route path="menu" element={<MenuPage />} />
               <Route path="cart" element={<CartPage />} />
               <Route path="checkout" element={<CheckoutPage />} />
               <Route path="track/:token" element={<OrderTrackingPage />} />
-              <Route path="login" element={<LoginPage />} />
-              <Route path="register" element={<RegisterPage />} />
+              {/* Phase 4D: OrdersPage — protected, only for logged-in users */}
+              {/* <Route path="orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} /> */}
               <Route path="*" element={<Navigate to="/menu" replace />} />
             </Route>
           </Routes>
