@@ -10,7 +10,7 @@ import axios from 'axios'
 const api = axios.create({
   // The base URL is prepended to every request made with this instance.
   // '/api' works because Vite's dev proxy (Step 5) forwards /api/* to
-  // http://localhost:8000 — our Laravel Docker container.
+  // http://localhost:8080 — our Laravel Docker container.
   // In production, this would be the actual domain.
   baseURL: '/api',
 

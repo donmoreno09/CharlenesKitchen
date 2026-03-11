@@ -8,6 +8,21 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),   // Adds Tailwind to the build pipeline
+    tailwindcss(),
   ],
+
+  server: {
+    proxy: {
+      // Any request starting with /api is forwarded to Laravel.
+      '/api': {
+        // This is the Laravel Docker container's address from the HOST machine.
+        // The Docker container exposes port 8000 (mapped in docker-compose.yml).
+        target: 'http://localhost:8000',
+
+        // changeOrigin: true rewrites the Host header to match the target.
+        // Required for some Laravel setups to route the request correctly.
+        changeOrigin: true,
+      },
+    },
+  },
 })
