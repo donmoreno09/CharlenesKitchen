@@ -12,34 +12,29 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login',    [AuthController::class, 'login']);
 
-// apiResource() generates all 5 RESTful routes automatically:
-// GET    /categories         → index
-// GET    /categories/{id}    → show
-// POST   /categories         → store
-// PATCH  /categories/{id}    → update
-// DELETE /categories/{id}    → destroy
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::apiResource('menu-items', MenuItemController::class)->only(['index', 'show']);
 
-// ── Protected Routes ───────────────────────────────────────────────────────────
+// Public — guests and authenticated users can both place orders
+Route::post('orders', [OrderController::class, 'store']);
+
+// Public — guest order tracking via UUID token
+Route::get('orders/track/{token}', [OrderController::class, 'trackByToken']);
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me',      [AuthController::class, 'me']);
 
-    // Orders 
-    Route::apiResource('orders', OrderController::class)->only(['index', 'show', 'store']);
+    Route::apiResource('orders', OrderController::class)->only(['index', 'show']);
     Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus']);
 
     // 'can:manage-menu' middleware checks the Gate before the controller runs.
     // Non-admin users receive a 403 before the controller is even invoked.
     Route::middleware('can:manage-menu')->group(function () {
         Route::apiResource('menu-items', MenuItemController::class)
-            ->only(['store', 'update', 'destroy']);
+             ->only(['store', 'update', 'destroy']);
         Route::apiResource('categories', CategoryController::class)
-            ->only(['store', 'update', 'destroy']);
+             ->only(['store', 'update', 'destroy']);
     });
 });
-
-// Guest order lookup by token — public but token-gated
-Route::get('orders/track/{token}', [OrderController::class, 'trackByToken']);
