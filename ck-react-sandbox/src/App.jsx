@@ -2,23 +2,21 @@
 // This is the root component of the application.
 // Everything you build in this sandbox will be imported and rendered here.
 
+// We import MenuCard and use it like an HTML tag.
+// React sees <MenuCard /> and calls our MenuCard function.
+
+import MenuCard from './MenuCard.jsx'
+
 export default function App() {
-  // These are regular JavaScript variables — not special React syntax
-  const restaurantName = "Charlene's Kitchen"
-  const tagline = "Fresh food, fast delivery"
-  const isOpen = false
-
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>{restaurantName}</h1>
-      <p>{tagline}</p>
+    <div style={{ padding: '2rem' }}>
+      <h1>Our Menu</h1>
 
-      {/* Note the double braces on style={{ }}.
-          The outer braces mean "I am embedding JavaScript".
-          The inner braces are the JavaScript object literal for the style. */}
-      <p style={{ color: isOpen ? 'green' : 'red' }}>
-        {isOpen ? '🟢 We are open' : '🔴 We are closed'}
-      </p>
+      {/* Each <MenuCard /> is a separate call to the MenuCard function.
+          Right now they all show the same hardcoded data — props will fix this. */}
+      <MenuCard />
+      <MenuCard />
+      <MenuCard />
     </div>
   )
 }
