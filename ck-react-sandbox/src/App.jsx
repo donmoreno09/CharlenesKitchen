@@ -3,6 +3,7 @@
 // Everything you build in this sandbox will be imported and rendered here.
 
 import QuantityControl from './QuantityControl.jsx'
+import CheckoutNameInput from './CheckoutNameInput.jsx'
 
 export default function App() {
   return (
@@ -13,6 +14,8 @@ export default function App() {
           Changing one does not affect the other. This is local state. */}
       <QuantityControl itemName="Margherita Pizza" unitPrice={12.50} />
       <QuantityControl itemName="Pepperoni Pizza" unitPrice={14.00} />
+
+      <CheckoutNameInput />
     </div>
   )
 }
