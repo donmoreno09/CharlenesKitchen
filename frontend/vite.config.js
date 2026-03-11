@@ -15,9 +15,11 @@ export default defineConfig({
     proxy: {
       // Any request starting with /api is forwarded to Laravel.
       '/api': {
-        // This is the Laravel Docker container's address from the HOST machine.
-        // The Docker container exposes port 8000 (mapped in docker-compose.yml).
-        target: 'http://localhost:8080',
+        // Read from .env — falls back to 8080 if not set.
+        // process.env is available in vite.config.js (Node.js context).
+        // Note: use process.env here, NOT import.meta.env —
+        // import.meta.env is only available inside your React components.
+        target: process.env.VITE_API_TARGET || 'http://localhost:8080',
 
         // changeOrigin: true rewrites the Host header to match the target.
         // Required for some Laravel setups to route the request correctly.
