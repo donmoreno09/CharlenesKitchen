@@ -18,13 +18,13 @@ export default function App() {
         AuthProvider must be inside BrowserRouter because it calls useNavigate().
         useNavigate() only works inside a Router context.
       */}
-      <AuthProvider>
-        {/*
-          CartProvider is inside AuthProvider so that AuthContext's logout()
-          can eventually clear the cart. In Phase 4D, logout will call clearCart()
-          from useCart() — which requires CartProvider to be in scope.
-        */}
-        <CartProvider>
+      {/*
+        CartProvider must wrap AuthProvider because AuthProvider calls useCart()
+        inside logout() to clear the cart on sign-out.
+        A hook can only read from a provider that is above it in the tree.
+      */}
+      <CartProvider>
+        <AuthProvider>
           <Routes>
               <Route path="login" element={
                   <GuestRoute>
@@ -47,8 +47,8 @@ export default function App() {
               <Route path="*" element={<Navigate to="/menu" replace />} />
             </Route>
           </Routes>
-        </CartProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </CartProvider>
     </BrowserRouter>
   )
 }
