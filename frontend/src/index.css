@@ -1,0 +1,5 @@
+/* This single @import pulls in all of Tailwind's utility classes.
+   It replaces the traditional @tailwind base/components/utilities directives
+   used in older Tailwind versions. */
+
+@import "tailwindcss";
