@@ -6,6 +6,7 @@ import MenuPage from './pages/MenuPage'
 import CartPage from './pages/CartPage'
 import CheckoutPage from './pages/CheckoutPage'
 import OrderTrackingPage from './pages/OrderTrackingPage'
+import OrderConfirmationPage from './pages/OrderConfirmationPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import GuestRoute from './components/layout/GuestRoute'
@@ -42,6 +43,7 @@ export default function App() {
               <Route path="cart" element={<CartPage />} />
               <Route path="checkout" element={<CheckoutPage />} />
               <Route path="track/:token" element={<OrderTrackingPage />} />
+              <Route path="order-confirmation" element={<OrderConfirmationPage />} />
               {/* Phase 4D: OrdersPage — protected, only for logged-in users */}
               {/* <Route path="orders" element={<ProtectedRoute><OrdersPage /></ProtectedRoute>} /> */}
               <Route path="*" element={<Navigate to="/menu" replace />} />
