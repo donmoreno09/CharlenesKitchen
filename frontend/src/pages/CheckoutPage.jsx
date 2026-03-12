@@ -7,7 +7,7 @@
 // On success: clears cart, navigates to /order-confirmation
 //             passing the order data via React Router's location state.
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/useAuth'
 import { useCart } from '../context/useCart'
@@ -26,9 +26,10 @@ export default function CheckoutPage() {
 
   const [errors, setErrors]         = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const orderPlaced = useRef(false)
 
-  // Guard: if cart is empty, redirect to menu
-  if (cartItems.length === 0) {
+  // Guard: if cart is empty and no order was just placed, redirect to menu
+  if (cartItems.length === 0 && !orderPlaced.current) {
     navigate('/menu')
     return null
   }
@@ -53,6 +54,9 @@ export default function CheckoutPage() {
         notes:          notes || undefined,
         cart_items:     cartItemsPayload,
       })
+
+      // Mark order as placed so the empty-cart guard doesn't fire
+      orderPlaced.current = true
 
       // Clear cart on success — order is placed
       clearCart()
