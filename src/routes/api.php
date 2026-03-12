@@ -33,8 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Non-admin users receive a 403 before the controller is even invoked.
     Route::middleware('can:manage-menu')->group(function () {
         Route::apiResource('menu-items', MenuItemController::class)
-             ->only(['store', 'update', 'destroy']);
+            ->only(['store', 'update', 'destroy']);    
         Route::apiResource('categories', CategoryController::class)
-             ->only(['store', 'update', 'destroy']);
+            ->only(['store', 'update', 'destroy']);    
     });
 });
