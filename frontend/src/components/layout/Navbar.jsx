@@ -33,14 +33,15 @@ export default function Navbar() {
             }}
         />
 
-        {/* ── Pennants row ─────────────────────────────────────────────────── */}
-        <Pennants />
-
         {/* ── Main navbar bar ──────────────────────────────────────────────── */}
         <nav
             className="border-b-4 border-gold"
             style={{ background: 'linear-gradient(180deg, var(--color-red) 0%, #9B2318 100%)' }}
         >
+
+            {/* ── Pennants row ─────────────────────────────────────────────────── */}
+            <Pennants />
+            
             <div className="flex items-center gap-3.5 px-6 pt-2.5 pb-2 max-w-[1280px] mx-auto">
 
             {/* ── Logo ───────────────────────────────────────────────────────── */}
