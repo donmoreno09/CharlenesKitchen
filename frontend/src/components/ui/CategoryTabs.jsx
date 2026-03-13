@@ -1,41 +1,35 @@
-// Renders a horizontal row of category filter tabs.
-// Receives categories as props — does not fetch data itself.
-//
-// Props:
-//   categories     : array of category objects from the API
-//   selectedId     : the currently selected category id (null = show all)
-//   onSelect       : callback called with a category id (or null for "All")
-
-export default function CategoryTabs({ categories, selectedId, onSelect }) {
+export default function CategoryTabs({ categories, activeCategory, onSelect }) {
     return (
-        <div className="flex gap-2 overflow-x-auto pb-2">
-
-        {/* "All" tab — always first, selects null to show all items */}
-        <button
-            onClick={() => onSelect(null)}
-            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors
-            ${selectedId === null
-                ? 'bg-gray-800 text-white'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-400'
-            }`}
+        <div
+        className="flex gap-2.5 overflow-x-auto px-6 py-3.5 max-w-[1280px] mx-auto"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-            All
-        </button>
-
-        {categories.map(category => (
+        {categories.map(({ id, label, emoji }) => {
+            const isActive = id === activeCategory
+            return (
             <button
-            key={category.id}
-            onClick={() => onSelect(category.id)}
-            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors
-                ${selectedId === category.id
-                ? 'bg-gray-800 text-white'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-400'
-                }`}
+                key={id}
+                onClick={() => onSelect(id)}
+                className={`
+                flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full
+                font-nunito text-[13px] font-bold cursor-pointer whitespace-nowrap
+                transition-all duration-200
+                ${isActive
+                    ? 'border-2 border-gold text-dark -translate-y-px'
+                    : 'border-2 border-bamboo/40 text-rust bg-transparent hover:border-gold hover:bg-gold/10 hover:text-dark'
+                }
+                `}
+                style={isActive ? {
+                // Gold gradient active state — multi-stop, inline justified
+                background: 'linear-gradient(135deg, var(--color-gold), #F5C842)',
+                boxShadow: '0 4px 14px rgba(232,160,32,0.33)',
+                } : undefined}
             >
-            {category.name}
+                <span>{emoji}</span>
+                {label}
             </button>
-        ))}
-
+            )
+        })}
         </div>
     )
 }
