@@ -30,8 +30,19 @@ export default function MenuPage() {
     const fetchMenu = async () => {
       try {
         setLoading(true)
-        const data = await menuService.getMenuItems()
-        if (!cancelled) setMenuItems(data)
+        const [items, cats] = await Promise.all([
+          menuService.getAll(),
+          menuService.getCategories(),
+        ])
+        if (!cancelled) {
+          setMenuItems(items)
+          if (cats?.length) {
+            setCategories([
+              { id: 'all', label: 'Lahat', emoji: '🍽️' },
+              ...cats.map(c => ({ id: c.slug, label: c.name, emoji: FALLBACK_CATEGORIES.find(f => f.id === c.slug)?.emoji ?? '🍴' })),
+            ])
+          }
+        }
       } catch {
         if (!cancelled) setError('Hindi ma-load ang menu. Subukan ulit.')
       } finally {

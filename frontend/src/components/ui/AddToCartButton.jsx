@@ -4,7 +4,7 @@ export default function AddToCartButton({ menuItem, qty, onAdd, onRemove }) {
     const [added, setAdded] = useState(false)
 
     const handleAdd = () => {
-        onAdd()
+        onAdd(menuItem)
         setAdded(true)
         setTimeout(() => setAdded(false), 400)
     }

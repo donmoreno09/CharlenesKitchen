@@ -11,20 +11,20 @@ const menuService = {
   // Returns all active categories (with menu item count)
   getCategories: async () => {
     const response = await api.get('/categories')
-    return response.data
+    return response.data?.data ?? response.data
   },
 
   // GET /api/menu-items
   // Returns all available menu items with their categories
   getAll: async () => {
     const response = await api.get('/menu-items')
-    return response.data
+    return response.data?.data ?? response.data
   },
 
   // GET /api/menu-items/:id
   getById: async (id) => {
     const response = await api.get(`/menu-items/${id}`)
-    return response.data
+    return response.data?.data ?? response.data
   },
 }
 
