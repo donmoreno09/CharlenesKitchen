@@ -17,6 +17,10 @@ import { CartContext } from './CartContext'
 export function CartProvider({ children }) {
     // cartItems shape: [{ menuItem: { id, name, price, ... }, quantity: N }, ...]
     const [cartItems, setCartItems] = useState([])
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+
+    const openDrawer  = () => setIsDrawerOpen(true)
+    const closeDrawer = () => setIsDrawerOpen(false)    
 
     // ── Add to Cart ────────────────────────────────────────────────────────────
     //
@@ -106,6 +110,9 @@ export function CartProvider({ children }) {
         updateQuantity,
         clearCart,
         isInCart,
+        isDrawerOpen,
+        openDrawer,
+        closeDrawer,
     }
 
     return (
