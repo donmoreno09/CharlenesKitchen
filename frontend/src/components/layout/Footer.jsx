@@ -35,7 +35,7 @@ export default function Footer() {
                 Charlene's Kitchen
             </div>
             <div className="font-nunito text-[10px] text-bamboo font-extrabold tracking-[0.16em] uppercase mb-3.5">
-                Lutong Bahay · Since 1994
+                Lutong Bahay · Since 2025
             </div>
             <p className="font-nunito text-[13px] text-cream/55 leading-[1.7] max-w-[220px]">
                 Lutong-bahay na pagkain, gawa sa puso. Daily-sourced ingredients, honest cooking.

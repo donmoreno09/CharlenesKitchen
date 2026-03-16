@@ -85,7 +85,7 @@ export default function HeroJeepney() {
         <rect x="402" y="60" width="10" height="28" rx="4" fill="var(--color-bamboo)" opacity="0.8" />
 
         {/* ── License plate ─────────────────────────────────────────────────
-            Cream background, dark text. "CK · 1994" — Charlene's Kitchen, 1994. */}
+            Cream background, dark text. "CK · 2025" — Charlene's Kitchen, 2025. */}
         <rect x="172" y="88" width="76" height="18" rx="4" fill="var(--color-cream)" />
         <text
             x="210" y="101"
@@ -96,7 +96,7 @@ export default function HeroJeepney() {
             fill="var(--color-dark)"
             letterSpacing="1.5"
         >
-            CK · 1994
+            CK · 2025
         </text>
 
         {/* ── Body label ────────────────────────────────────────────────────

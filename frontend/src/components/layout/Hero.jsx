@@ -54,7 +54,7 @@ export default function Hero() {
             }}
         />
 
-        {/* ── Decorative "1994" watermark ──────────────────────────────────
+        {/* ── Decorative "2025" watermark ──────────────────────────────────
             clamp() font size — inline. animation and color both inline:
             clamp can't be expressed in Tailwind, and text-bamboo/7 is not
             a valid opacity modifier (opacity must be 0–100 integer in Tailwind). */}
@@ -68,7 +68,7 @@ export default function Hero() {
             animation: 'fadeUp 1s ease 0.8s both',
             }}
         >
-            1994
+            2025
         </div>
 
         {/* ── Jeepney lane ────────────────────────────────────────────────── */}

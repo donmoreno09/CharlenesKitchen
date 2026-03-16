@@ -7,13 +7,13 @@ import menuService              from '../services/menuService'
 
 const FALLBACK_CATEGORIES = [
   { id: 'all',          label: 'Lahat',        emoji: '🍽️' },
-  { id: 'silog',        label: 'Silog',        emoji: '🍳' },
-  { id: 'ulam',         label: 'Ulam',         emoji: '🍲' },
-  { id: 'merienda',     label: 'Merienda',     emoji: '🍢' },
+  { id: 'starters',        label: 'Silog',        emoji: '🍳' },
+  { id: 'pasta',         label: 'Ulam',         emoji: '🍲' },
+  { id: 'pizza',     label: 'Merienda',     emoji: '🍢' },
   { id: 'sabaw',        label: 'Sabaw',        emoji: '🍜' },
-  { id: 'inihaw',       label: 'Inihaw',       emoji: '🔥' },
-  { id: 'panghimagas',  label: 'Panghimagas',  emoji: '🍮' },
-  { id: 'inumin',       label: 'Inumin',       emoji: '🥤' },
+  { id: 'grills',       label: 'Inihaw',       emoji: '🔥' },
+  { id: 'desserts',  label: 'Panghimagas',  emoji: '🍮' },
+  { id: 'drinks',       label: 'Inumin',       emoji: '🥤' },
 ]
 
 export default function MenuPage() {
