@@ -3,6 +3,7 @@ import Navbar     from './Navbar'
 import Footer     from './Footer'
 import BgScene    from '../decorative/BgScene'
 import CartDrawer from '../ui/CartDrawer'
+import Toast         from '../ui/Toast'
 
 export default function RootLayout() {
   return (
@@ -25,6 +26,8 @@ export default function RootLayout() {
 
       {/* z-[699]/z-[700]: Drawer always in DOM for exit animation */}
       <CartDrawer />
+
+      <Toast />     {/* ← always last — renders above everything */}
 
     </div>
   )

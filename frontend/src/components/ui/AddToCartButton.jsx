@@ -1,11 +1,14 @@
-import { useState } from 'react'
+import { useState }   from 'react'
+import { useToast }   from '../../context/useToast'
 
 export default function AddToCartButton({ menuItem, qty, onAdd, onRemove }) {
+    const { showToast } = useToast()
     const [added, setAdded] = useState(false)
 
     const handleAdd = () => {
         onAdd(menuItem)
         setAdded(true)
+        showToast(`${menuItem.name} naidagdag!`, '🛒')
         setTimeout(() => setAdded(false), 400)
     }
 
@@ -16,11 +19,9 @@ export default function AddToCartButton({ menuItem, qty, onAdd, onRemove }) {
             onClick={onRemove}
             className="w-7 h-7 rounded-full border-2 border-bamboo/33 bg-cream flex items-center justify-center font-nunito font-extrabold text-dark text-[14px] cursor-pointer transition-all hover:bg-gold hover:border-gold"
             >−</button>
-
             <span className="font-pacifico text-[15px] text-red w-[22px] text-center">
             {qty}
             </span>
-
             <button
             onClick={handleAdd}
             className="w-7 h-7 rounded-full border-2 border-gold bg-gold flex items-center justify-center font-nunito font-extrabold text-dark text-[14px] cursor-pointer"
