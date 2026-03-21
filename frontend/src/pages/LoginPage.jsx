@@ -1,118 +1,118 @@
-// Login form wired to AuthContext's login() function.
-//
-// State management:
-// - email, password: controlled inputs (form field values)
-// - error: API error message to display
-// - isSubmitting: prevents double-submission while request is in flight
-//
-// On success: AuthContext.login() navigates to /menu automatically.
-// On failure: error state is set and displayed below the form.
-
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useAuth } from '../context/useAuth'
+import { useState }          from 'react'
+import { Link }              from 'react-router-dom'
+import { useAuth }           from '../context/useAuth'
+import { useToast }          from '../context/useToast'
+import Spinner               from '../components/ui/Spinner'
 
 export default function LoginPage() {
-  const { login } = useAuth()
+  const { login }       = useAuth()
+  const { showToast }   = useToast()
 
-  const [email, setEmail]           = useState('')
-  const [password, setPassword]     = useState('')
-  const [error, setError]           = useState(null)
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [form, setForm]     = useState({ email: '', password: '' })
+  const [loading, setLoading] = useState(false)
+  const [error, setError]   = useState(null)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()   // Prevent browser's default form submission
+  const updateField = key => e => setForm(prev => ({ ...prev, [key]: e.target.value }))
 
-    setError(null)        // Clear any previous error
-    setIsSubmitting(true)
-
+  const handleSubmit = async () => {
+    if (!form.email || !form.password) return
+    setLoading(true)
+    setError(null)
     try {
-      // AuthContext.login() calls the API, stores the token,
-      // and navigates to /menu on success.
-      await login(email, password)
+      // AuthProvider.login() navigates to /menu on success automatically
+      await login(form.email, form.password)
+      showToast('Maligayang pagdating!', '👋')
     } catch (err) {
-      // Laravel returns validation errors in err.response.data.errors
-      // and a general message in err.response.data.message
-      const message =
+      const msg =
         err.response?.data?.errors?.email?.[0] ||
         err.response?.data?.message ||
-        'Login failed. Please try again.'
-
-      setError(message)
+        'Mali ang email o password. Subukan ulit.'
+      setError(msg)
     } finally {
-      setIsSubmitting(false)
+      setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Welcome back</h1>
-        <p className="text-gray-500 text-sm mb-8">
-          Sign in to your Charlene's Kitchen account
-        </p>
-
-        {/* Error message */}
-        {error && (
-          <div className="mb-6 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
-            {error}
+    <div className="min-h-screen flex items-center justify-center py-12 px-4">
+      <div
+        className="w-full max-w-[420px] rounded-[24px] overflow-hidden border-2 border-bamboo/33"
+        style={{
+          background: 'linear-gradient(180deg, var(--color-sand), var(--color-cream))',
+          boxShadow: '0 24px 80px rgba(26,15,0,0.15)',
+          animation: 'fadeUp 0.4s ease both',
+        }}
+      >
+        {/* Red header */}
+        <div
+          className="px-[30px] pt-6 pb-5 text-center relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, var(--color-red), #8B1A1A)' }}
+        >
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(232,160,32,0.07) 8px, rgba(232,160,32,0.07) 9px)' }}
+          />
+          <div className="relative z-10">
+            <div className="text-[40px] mb-2">🍽️</div>
+            <div className="font-pacifico text-[26px] text-cream" style={{ textShadow: '2px 2px 0 rgba(26,15,0,0.33)' }}>
+              Mag-sign in
+            </div>
+            <div className="font-nunito text-[11px] text-gold font-extrabold tracking-[0.12em] uppercase mt-1">
+              Charlene's Kitchen
+            </div>
           </div>
-        )}
+        </div>
 
-        {/* Login form — no <form> action, all handled via onSubmit */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Form body */}
+        <div className="px-[30px] py-7">
+          {error && (
+            <div className="bg-red/10 border border-red/30 rounded-xl px-4 py-3 mb-4 font-nunito text-[13px] text-red font-semibold">
+              {error}
+            </div>
+          )}
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm
-                        focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-              className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm
-                        focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent"
-            />
-          </div>
+          <AuthField label="Email"    value={form.email}    onChange={updateField('email')}    placeholder="ikaw@email.com"     type="email"    />
+          <AuthField label="Password" value={form.password} onChange={updateField('password')} placeholder="Ang iyong password" type="password" />
 
           <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full py-2.5 bg-gray-800 text-white text-sm font-medium rounded-lg
-                      hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed
-                      transition-colors"
+            onClick={handleSubmit}
+            disabled={!form.email || !form.password || loading}
+            className="w-full py-[14px] mt-2 rounded-[14px] font-nunito font-extrabold text-[14px] text-dark border-none cursor-pointer flex items-center justify-center gap-2.5 disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
+            style={{
+              background: 'linear-gradient(135deg, var(--color-gold), #F5C842)',
+              boxShadow: '0 4px 18px rgba(232,160,32,0.33)',
+            }}
           >
-            {isSubmitting ? 'Signing in...' : 'Sign in'}
+            {loading ? <><Spinner size={18} colorClass="border-dark" /><span>Signing in…</span></> : '👤 Sign In'}
           </button>
 
-        </form>
-
-        <p className="mt-6 text-center text-sm text-gray-500">
-          Don't have an account?{' '}
-          <Link to="/register" className="text-gray-800 font-medium hover:underline">
-            Create one
-          </Link>
-        </p>
-
+          <div className="text-center mt-5 font-nunito text-[13px] text-bamboo font-medium">
+            Wala pang account?{' '}
+            <Link to="/register" className="text-red font-extrabold no-underline hover:underline">
+              Mag-register
+            </Link>
+          </div>
+        </div>
       </div>
+    </div>
+  )
+}
+
+// Shared auth input — used by both Login and Register.
+// Extract to src/components/ui/AuthField.jsx if reuse grows further.
+function AuthField({ label, value, onChange, placeholder, type = 'text' }) {
+  return (
+    <div className="mb-4">
+      <label className="block font-nunito text-[10px] font-extrabold tracking-[0.12em] uppercase text-rust mb-2">
+        {label}
+      </label>
+      <input
+        type={type}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="w-full bg-cream border-2 border-bamboo/40 rounded-xl text-dark font-nunito text-[14px] font-semibold px-4 py-3 outline-none transition-all focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-bamboo placeholder:font-normal"
+      />
     </div>
   )
 }
