@@ -210,31 +210,9 @@
       to   { transform: none; opacity: 1; }
    }
 
-   @keyframes meshDrift {
-      0%, 100% { transform: scale(1)    rotate(0deg); }
-      33%      { transform: scale(1.05) rotate(1deg); }
-      66%      { transform: scale(0.97) rotate(-1deg); }
-   }
-
-   @keyframes floatCard {
-      0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-10px); }
-   }
-
    @keyframes scaleUp {
       from { opacity: 0; transform: scale(0.6) rotate(-12deg); }
       to   { opacity: 1; transform: none; }
-   }
-
-   @keyframes jeepDrive {
-      from { transform: translateX(110vw); }
-      to   { transform: translateX(-520px); }
-   }
-
-   @keyframes checkBounce {
-      0%   { transform: scale(0.5); opacity: 0; }
-      60%  { transform: scale(1.3); opacity: 1; }
-      100% { transform: scale(1); }
    }
 
    /* ── 4. GLOBAL BASE STYLES ───────────────────────────────────────────────────
