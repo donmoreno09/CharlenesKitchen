@@ -1,76 +1,95 @@
-// Route: /order-confirmation
-// Shown after a successful order.
-// Reads order data from React Router location state (passed from CheckoutPage).
-// If accessed directly (no state), redirects to /menu.
+// Shown when navigated to with state: { order } from a legacy or external flow.
+// The new CheckoutPage handles confirmation inline at step 2.
+// This page acts as a fallback and is kept for the /order-confirmation route.
 
 import { useLocation, Link, Navigate } from 'react-router-dom'
 
 export default function OrderConfirmationPage() {
-    const location = useLocation()
-    const order    = location.state?.order
+  const location = useLocation()
+  const order    = location.state?.order
 
-    // Direct access without state — send them to the menu
-    if (!order) {
-        return <Navigate to="/menu" replace />
-    }
+  if (!order) return <Navigate to="/menu" replace />
 
-    return (
-        <div className="max-w-lg mx-auto px-4 py-16 text-center">
-
-        <div className="text-5xl mb-4">🎉</div>
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Order Confirmed!</h1>
-        <p className="text-gray-500 text-sm mb-8">
-            Thank you, <strong>{order.customer_name}</strong>. We've received your order
-            and a confirmation email is on its way to <strong>{order.customer_email}</strong>.
-        </p>
-
-        {/* Order ID */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 mb-4 text-left">
-            <div className="flex justify-between text-sm mb-2">
-            <span className="text-gray-500">Order ID</span>
-            <span className="font-semibold text-gray-800">#{order.id}</span>
-            </div>
-            <div className="flex justify-between text-sm mb-2">
-            <span className="text-gray-500">Status</span>
-            <span className="font-semibold text-gray-800 capitalize">{order.status}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-            <span className="text-gray-500">Total</span>
-            <span className="font-bold text-gray-800">€{parseFloat(order.total_price).toFixed(2)}</span>
-            </div>
-        </div>
-
-        {/* Guest token — only shown for guest orders */}
-        {order.guest_token && (
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8 text-left">
-            <p className="text-xs font-semibold text-amber-700 mb-1 uppercase tracking-wide">
-                Your Order Tracking Token
-            </p>
-            <p className="text-xs text-amber-600 mb-2">
-                Save this token to track your order. It was also sent to your email.
-            </p>
-            <code className="text-sm font-mono text-amber-800 break-all">
-                {order.guest_token}
-            </code>
-            <div className="mt-3">
-                <Link
-                to={`/track/${order.guest_token}`}
-                className="text-xs text-amber-700 font-medium underline hover:text-amber-900"
-                >
-                Track your order →
-                </Link>
-            </div>
-            </div>
-        )}
-
-        <Link
-            to="/menu"
-            className="inline-block px-6 py-2.5 bg-gray-800 text-white text-sm font-medium
-                    rounded-lg hover:bg-gray-700 transition-colors"
+  return (
+    <div className="min-h-screen flex items-center justify-center py-12 px-4">
+      <div
+        className="w-full max-w-[480px] rounded-[24px] overflow-hidden border-2 border-bamboo/33 text-center"
+        style={{
+          background: 'linear-gradient(180deg, var(--color-sand), var(--color-cream))',
+          boxShadow: '0 24px 80px rgba(26,15,0,0.15)',
+          animation: 'fadeUp 0.4s ease both',
+        }}
+      >
+        {/* Red header */}
+        <div
+          className="px-[30px] pt-6 pb-5 relative overflow-hidden"
+          style={{ background: 'linear-gradient(135deg, var(--color-red), #8B1A1A)' }}
         >
-            Back to Menu
-        </Link>
-
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(232,160,32,0.07) 8px, rgba(232,160,32,0.07) 9px)' }}
+          />
+          <div className="relative z-10">
+            <div
+              className="font-pacifico text-[22px] text-cream"
+              style={{ textShadow: '1px 2px 0 rgba(26,15,0,0.4)' }}
+            >
+              Naka-order na! 🎉
+            </div>
+          </div>
         </div>
-    )
+
+        <div className="px-[30px] py-8">
+          {/* checkBounce icon */}
+          <div
+            className="w-[78px] h-[78px] rounded-full mx-auto mb-5 flex items-center justify-center text-[34px]"
+            style={{
+              background: 'linear-gradient(135deg, var(--color-gold), #F5C842)',
+              boxShadow: '0 8px 28px rgba(232,160,32,0.33)',
+              animation: 'checkBounce 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both',
+            }}
+          >✓</div>
+
+          <div className="font-playfair italic text-[22px] text-dark mb-2">
+            Salamat, {order.customer_name}!
+          </div>
+          <div className="font-nunito text-[13px] text-bamboo mb-6 font-medium">
+            Order #{order.id} · Status: <span className="font-extrabold text-dark capitalize">{order.status}</span>
+          </div>
+
+          {/* Order summary */}
+          <div className="bg-sand border-2 border-bamboo/27 rounded-[14px] p-4 mb-5 text-left">
+            <div className="font-pacifico text-[14px] text-rust mb-3">Buod</div>
+            <div className="flex justify-between font-nunito text-[13px] mb-1.5">
+              <span className="text-bamboo">Total</span>
+              <span className="font-extrabold text-dark">€{parseFloat(order.total_price).toFixed(2)}</span>
+            </div>
+          </div>
+
+          {/* Guest token */}
+          {order.guest_token && (
+            <div className="bg-gold/10 border-2 border-gold/33 rounded-[14px] p-4 mb-5 text-left">
+              <div className="font-nunito text-[10px] font-extrabold tracking-[0.1em] uppercase text-rust mb-1">
+                Tracking Token
+              </div>
+              <code className="font-nunito text-[12px] text-dark break-all">{order.guest_token}</code>
+              <div className="mt-2">
+                <Link to={`/track/${order.guest_token}`} className="font-nunito text-[12px] text-red font-extrabold no-underline hover:underline">
+                  Track ang order →
+                </Link>
+              </div>
+            </div>
+          )}
+
+          <Link
+            to="/menu"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-red text-cream font-nunito font-extrabold text-[13px] no-underline"
+            style={{ boxShadow: '0 4px 16px rgba(192,57,43,0.27)' }}
+          >
+            🏠 Bumalik sa Menu
+          </Link>
+        </div>
+      </div>
+    </div>
+  )
 }
