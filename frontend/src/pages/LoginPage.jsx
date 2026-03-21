@@ -3,6 +3,7 @@ import { Link }              from 'react-router-dom'
 import { useAuth }           from '../context/useAuth'
 import { useToast }          from '../context/useToast'
 import Spinner               from '../components/ui/Spinner'
+import AuthField from '../components/ui/AuthField'
 
 export default function LoginPage() {
   const { login }       = useAuth()
@@ -94,25 +95,6 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-    </div>
-  )
-}
-
-// Shared auth input — used by both Login and Register.
-// Extract to src/components/ui/AuthField.jsx if reuse grows further.
-function AuthField({ label, value, onChange, placeholder, type = 'text' }) {
-  return (
-    <div className="mb-4">
-      <label className="block font-nunito text-[10px] font-extrabold tracking-[0.12em] uppercase text-rust mb-2">
-        {label}
-      </label>
-      <input
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        className="w-full bg-cream border-2 border-bamboo/40 rounded-xl text-dark font-nunito text-[14px] font-semibold px-4 py-3 outline-none transition-all focus:border-gold focus:ring-2 focus:ring-gold/20 placeholder:text-bamboo placeholder:font-normal"
-      />
     </div>
   )
 }
